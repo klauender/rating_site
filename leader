@@ -1,0 +1,41 @@
+ファイル構成
+
+rating_site/
+    public/
+        index.html
+        item.html
+        login.html
+        mypage.html
+        css/
+            style.css
+        js/
+            main.js
+                各ページに共通する処理をまとめる
+            api.js
+                サーバーと通信する処理をまとめる
+                通信にはfetch()を使用する。その処理をまとめる
+            auth.js
+                ログイン・ログアウト・ユーザー認証まわりの処理をまとめる
+            item.js
+                item.html専用
+    
+    server/
+        server.js
+            サーバー関連の処理(上司)
+        routes/
+            auth.js
+                認証関連の処理(部下)
+            items.js
+                アイテム関連の処理(部下)
+        db.js
+            db関連の処理
+
+    .env
+        環境変数を保存する。
+        パスワード・db接続情報・apiキー・ポート番号
+    .gitignore
+        gitで管理したくないファイルを指定するリスト
+    package.json
+        node.jsの設定・管理
+        node.jsはファイル名じゃなくてjs実行環境
+    leader.txt
