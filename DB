@@ -1,0 +1,352 @@
+•users
+
+-user_id(PK)
+-user_name
+-mail(U)
+-password
+-created_at
+
+CREATE TABLE users (
+  user_id    
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+
+  user_name  
+    VARCHAR(20)
+    NOT NULL,
+
+  mail
+    VARCHAR(255)
+    NOT NULL,
+    UNIQUE,
+
+  password
+    VARCHAR(255)
+    NOT NULL,
+
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP,
+) ENGINE=InnoDB
+  
+INT UNSIGNED...符号なし整数
+AUTO_INCREMENT...1,2,3自動採番     
+VARCHAR(20)...最大20文字の可変長文字列 
+DEFAULT CURRENT_TIMESTAMP...現在時刻
+ENGINE=InnoDB...デフォルトでこれだから明記する必要はないが念のため
+
+
+
+•items
+-item_id(PK)
+-item_name
+-property1
+-created_at
+
+CREATE TABLE items (
+  item_id
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+
+  item_name
+    VARCHAR(100)
+    NOT NULL
+    UNIQUE,
+
+  property1
+    INT UNSIGNED
+    NOT NULL,
+
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP,
+) ENGINE=InnoDB
+
+
+•criteria
+-criterion_id(PK)
+-criterion_name(U)
+
+CREATE TABLE criteria (
+  criterion_id
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+
+  criterion_name
+  VARCHAR(25)
+  NOT NULL
+  UNIQUE
+) ENGINE=InnoDB
+
+
+•personal_score(ON DELETE CASCADE)
+-user_id(PK,FK)
+-item_id(PK,FK)
+-criterion_id(PK,FK)
+-per_score
+-created_at
+
+CREATE TABLE personal_score (
+  user_id
+    INT UNSIGNED
+    NOT NULL,
+
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  criterion_id
+    INT UNSIGNED
+    NOT NULL,
+
+  per_score
+    DECIMAL(4,1)
+    NOT NULL,
+
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (user_id, item_id, criterion_id),
+
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (criterion_id) REFERENCES criteria(criterion_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+
+•avg_score(ON DELETE CASCADE)
+-item_id(PK,FK)
+-criterion_id(PK,FK)
+-sum_score
+-votes
+
+CREATE TABLE avg_score (
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  criterion_id
+    INT UNSIGNED
+    NOT NULL,
+
+  sum_score
+    DECIMAL(12,2)
+    NOT NULL DEFAULT 0.0,
+
+  votes
+    INT UNSIGNED
+    NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (item_id, criterion_id),
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (criterion_id) REFERENCES criteria(criterion_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+•tags
+-tag_id(PK)
+-tag_name(U)
+
+CREATE TABLE tags (
+  tag_id
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+
+  tag_name
+    VARCHAR(20)
+    NOT NULL,
+    UNIQUE
+) ENGINE=InnoDB
+
+
+
+•item_tags(ON DELETE CASCADE)
+-item_id(PK,FK)
+-tag_id(PK,FK)
+
+CREATE TABLE item_tags (
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  tag_id 
+    INT UNSIGNED
+    NOT NULL,
+
+  PRIMARY KEY (item_id, tag_id),
+
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (tag_id)  REFERENCES tags(tag_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+
+•comments(ON DELETE CASCADE)
+-comment_id(PK)
+-user_id(FK)
+-item_id(FK)
+-comment
+-created_at
+
+CREATE TABLE comments (
+  comment_id
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+
+  user_id
+    INT UNSIGNED
+    NOT NULL,
+
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  comment
+    TEXT
+    NOT NULL,
+
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+
+•bookmarks(ON DELETE CASCADE)
+-user_id(PK,FK)
+-item_id(PK,FK)
+-created_at
+
+CREATE TABLE bookmarks (
+  user_id
+    INT UNSIGNED
+    NOT NULL,
+
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (user_id, item_id),
+
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE   
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+
+・playlists(ON DELETE CASCADE)
+-playlist_id(PK)
+-user_id(FK)
+-playlist_name
+-created_at
+
+CREATE TABLE playlists(
+  playlist_id
+    INT UNSIGNED
+    AUTO_INCREMENT
+    PRIMARY KEY,
+  
+  user_id
+    INT UNSIGNED
+    NOT NULL,
+
+  playlist_name
+    VARCHAR(50)
+    NOT NULL,
+  
+  created_at
+    TIMESTAMP
+    NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+
+・playlists_items(ON DELETE CASCADE)
+-playlist_id(PK,FK)
+-item_id(PK,FK)
+-sort_order(U(playlist_id, sort)) プレイリスト内で連番
+
+CREATE TABLE playlists_items(
+  playlist_id
+    INT UNSIGNED
+    NOT NULL,
+
+  item_id
+    INT UNSIGNED
+    NOT NULL,
+
+  sort_order
+    INT UNSIGNED
+    NOT NULL,
+
+  PRIMARY KEY (playlist_id, item_id),
+
+  UNIQUE (playlist_id, sort_order),
+
+  FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  FOREIGN KEY (item_id) REFERENCES items(item_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+
+ UNIQUE (playlist_id, sort_order)
+ これでプレイリスト内に同じ番号が付くことはなくなる
+ 違うプレイリストならおなじ番号が重複しても良し
