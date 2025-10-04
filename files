@@ -45,121 +45,6 @@ rating_site/
 
 
 
-DB
-
-•users
-
--user_id(PK)
-
--mail(U)
-
--password
-
--created_at
-
-
-
-•items
-
--item_id(PK)
-
--item_name
-
--criterion_type_id(FK)
-
--property1
-
--property2
-
--created_at
-
-
-
-•criteria_types 共通評価はid=0
-
--criterion_type_id(PK)
-
--criterion_type_name(U)
-
-
-
-•criteria
-
--criterion_id(PK)
-
--criterion_name(U)
-
--criterion_type_id(FK)
-
-
-
-•personal_score(ON DELETE CASCADE)
-
--user_id(PK,FK)
-
--item_id(PK,FK)
-
--criterion_id(PK,FK)
-
--per_score
-
--created_at
-
-
-
-•avg_score(ON DELETE CASCADE)
-
--item_id(PK,FK)
-
--criterion_id(PK,FK)
-
--avg_score
-
--votes
-
-
-
-•tags
-
--tag_id(PK)
-
--criterion_type_id(FK)
-
--tag_name(U)
-
-
-
-•item_tags(ON DELETE CASCADE)
-
--item_id(PK,FK)
-
--tag_id(PK,FK)
-
-
-
-•comments(ON DELETE CASCADE)
-
--comment_id(PK)
-
--user_id(FK)
-
--item_id(FK)
-
--comment
-
--created_at
-
-
-
-•bookmarks(ON DELETE CASCADE)
-
--user_id(PK,FK)
-
--item_id(PK,FK)
-
--created_at
-
-
 
 HTML
 
@@ -191,6 +76,6 @@ booking.comを参考に
 
 手順
 
-DB
-post_item.html
-item.html
+1完了.DB作成
+2.item.html
+3.post_item.html
