@@ -1,10 +1,9 @@
-•users
-
--user_id(PK)
--user_name
--mail(U)
--password
--created_at
+--usersテーブル
+    --user_id(PK)
+    --user_name
+    --mail(U)
+    --password
+    --created_at
 
 CREATE TABLE users (
   user_id    
@@ -18,7 +17,7 @@ CREATE TABLE users (
 
   mail
     VARCHAR(255)
-    NOT NULL,
+    NOT NULL
     UNIQUE,
 
   password
@@ -28,22 +27,22 @@ CREATE TABLE users (
   created_at
     TIMESTAMP
     NOT NULL
-    DEFAULT CURRENT_TIMESTAMP,
-) ENGINE=InnoDB
+    DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
   
-INT UNSIGNED...符号なし整数
-AUTO_INCREMENT...1,2,3自動採番     
-VARCHAR(20)...最大20文字の可変長文字列 
-DEFAULT CURRENT_TIMESTAMP...現在時刻
-ENGINE=InnoDB...デフォルトでこれだから明記する必要はないが念のため
+--INT UNSIGNED...符号なし整数
+--AUTO_INCREMENT...1,2,3自動採番     
+--VARCHAR(20)...最大20文字の可変長文字列 
+--DEFAULT CURRENT_TIMESTAMP...現在時刻
+--ENGINE=InnoDB...デフォルトでこれだから明記する必要はないが念のため
 
 
 
-•items
--item_id(PK)
--item_name
--property1
--created_at
+--itemsテーブル
+    --item_id(PK)
+    --item_name
+    --property1
+    --created_at
 
 CREATE TABLE items (
   item_id
@@ -63,13 +62,13 @@ CREATE TABLE items (
   created_at
     TIMESTAMP
     NOT NULL
-    DEFAULT CURRENT_TIMESTAMP,
-) ENGINE=InnoDB
+    DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
 
-•criteria
--criterion_id(PK)
--criterion_name(U)
+--criteriaテーブル
+    --criterion_id(PK)
+    --criterion_name(U)
 
 CREATE TABLE criteria (
   criterion_id
@@ -81,17 +80,17 @@ CREATE TABLE criteria (
   VARCHAR(25)
   NOT NULL
   UNIQUE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
-•personal_score(ON DELETE CASCADE)
--user_id(PK,FK)
--item_id(PK,FK)
--criterion_id(PK,FK)
--per_score
--created_at
+--per_scoreテーブル
+    --user_id(PK,FK)
+    --item_id(PK,FK)
+    --criterion_id(PK,FK)
+    --per_score
+    --created_at
 
-CREATE TABLE personal_score (
+CREATE TABLE per_score (
   user_id
     INT UNSIGNED
     NOT NULL,
@@ -126,15 +125,15 @@ CREATE TABLE personal_score (
   FOREIGN KEY (criterion_id) REFERENCES criteria(criterion_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
 
-•avg_score(ON DELETE CASCADE)
--item_id(PK,FK)
--criterion_id(PK,FK)
--sum_score
--votes
+--avg_scoreテーブル
+    --item_id(PK,FK)
+    --criterion_id(PK,FK)
+    --sum_score
+    --votes
 
 CREATE TABLE avg_score (
   item_id
@@ -162,12 +161,12 @@ CREATE TABLE avg_score (
   FOREIGN KEY (criterion_id) REFERENCES criteria(criterion_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
-•tags
--tag_id(PK)
--tag_name(U)
+--tagsテーブル
+    --tag_id(PK)
+    --tag_name(U)
 
 CREATE TABLE tags (
   tag_id
@@ -177,15 +176,15 @@ CREATE TABLE tags (
 
   tag_name
     VARCHAR(20)
-    NOT NULL,
+    NOT NULL
     UNIQUE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
 
-•item_tags(ON DELETE CASCADE)
--item_id(PK,FK)
--tag_id(PK,FK)
+--item_tagsテーブル
+    --item_id(PK,FK)
+    --tag_id(PK,FK)
 
 CREATE TABLE item_tags (
   item_id
@@ -206,16 +205,16 @@ CREATE TABLE item_tags (
   FOREIGN KEY (tag_id)  REFERENCES tags(tag_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
 
-•comments(ON DELETE CASCADE)
--comment_id(PK)
--user_id(FK)
--item_id(FK)
--comment
--created_at
+--commentsテーブル
+    --comment_id(PK)
+    --user_id(FK)
+    --item_id(FK)
+    --comment
+    --created_at
 
 CREATE TABLE comments (
   comment_id
@@ -247,14 +246,14 @@ CREATE TABLE comments (
   FOREIGN KEY (item_id) REFERENCES items(item_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
 
-•bookmarks(ON DELETE CASCADE)
--user_id(PK,FK)
--item_id(PK,FK)
--created_at
+--bookmarksテーブル
+    --user_id(PK,FK)
+    --item_id(PK,FK)
+    --created_at
 
 CREATE TABLE bookmarks (
   user_id
@@ -280,15 +279,15 @@ CREATE TABLE bookmarks (
   FOREIGN KEY (item_id) REFERENCES items(item_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
 
-・playlists(ON DELETE CASCADE)
--playlist_id(PK)
--user_id(FK)
--playlist_name
--created_at
+--playlists
+    --playlist_id(PK)
+    --user_id(FK)
+    --playlist_name
+    --created_at
 
 CREATE TABLE playlists(
   playlist_id
@@ -313,15 +312,15 @@ CREATE TABLE playlists(
   FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 
-・playlists_items(ON DELETE CASCADE)
--playlist_id(PK,FK)
--item_id(PK,FK)
--sort_order(U(playlist_id, sort)) プレイリスト内で連番
+--playlist_itemsテーブル
+    --playlist_id(PK,FK)
+    --item_id(PK,FK)
+    --sort_order(U(playlist_id, sort))
 
-CREATE TABLE playlists_items(
+CREATE TABLE playlist_items(
   playlist_id
     INT UNSIGNED
     NOT NULL,
@@ -345,8 +344,8 @@ CREATE TABLE playlists_items(
   FOREIGN KEY (item_id) REFERENCES items(item_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
- UNIQUE (playlist_id, sort_order)
- これでプレイリスト内に同じ番号が付くことはなくなる
- 違うプレイリストならおなじ番号が重複しても良し
+--UNIQUE (playlist_id, sort_order)
+--これでプレイリスト内に同じ番号が付くことはなくなる
+--違うプレイリストならおなじ番号が重複しても良し
