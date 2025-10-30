@@ -26,8 +26,11 @@ header {
 
 /* ハンバーガーアイコン */
 .hamburger {
-  width: 30px;
-  height: 22px;
+  position: fixed;   /* ← スクロールしても常に表示 */
+  left: 50px;        /* ← 左からの距離（調整OK） */
+  z-index: 1000;     /* ← 他の要素より前面に */
+  width: 40px;
+  height: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -47,8 +50,8 @@ header {
 .nav {
   position: fixed;
   top: 0;
-  right: -100%;
-  width: 60%;
+  left: -100%;
+  width: 20%; /* メニューの幅 */
   height: 100%;
   background: white;
   transition: 0.4s;
@@ -57,7 +60,7 @@ header {
 
 /* メニューが開いたとき */
 .nav.active {
-  right: 0;
+  left: 0;  /*左から出てくる*/
 }
 
 /* リストスタイル */
